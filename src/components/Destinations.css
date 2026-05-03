@@ -96,3 +96,13 @@
 .explore-btn:hover {
   color: var(--primary-gold);
 }
+
+@media (max-width: 480px) {
+  .destinations-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .card-image-wrapper {
+    height: 350px;
+  }
+}

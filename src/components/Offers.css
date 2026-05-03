@@ -202,3 +202,20 @@
     right: -10px;
   }
 }
+
+@media (max-width: 480px) {
+  .center-slide {
+    width: 95%;
+  }
+  .offer-title {
+    font-size: 1.4rem;
+  }
+  .offer-content {
+    padding: 1.5rem 1rem;
+  }
+  .offer-image-wrapper {
+    height: 220px;
+  }
+  .left-slide { left: -15px; }
+  .right-slide { right: -15px; }
+}

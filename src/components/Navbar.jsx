@@ -18,9 +18,6 @@ const Navbar = () => {
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
         <div className="navbar-left">
-          <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            <Menu size={24} />
-          </button>
           <div className="navbar-logo">
             <img src="/images/TanaVinto-logo.png" alt="TanaVinto Villas" className="logo-img" />
           </div>
@@ -36,6 +33,9 @@ const Navbar = () => {
 
         <div className="navbar-right">
           <button className="btn btn-primary login-btn" style={{ fontSize: '0.75rem', padding: '0.6rem 1.5rem', fontWeight: 600 }}>Book a Resort</button>
+          <button className="mobile-menu-btn" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+            <Menu size={24} />
+          </button>
         </div>
       </div>
     </nav>

@@ -134,3 +134,16 @@
     padding: 0 1rem;
   }
 }
+
+@media (max-width: 480px) {
+  .navbar-logo .logo-img {
+    height: 35px;
+  }
+  .login-btn {
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.65rem !important;
+  }
+  .nav-links.mobile-open {
+    padding: 1.5rem;
+  }
+}
