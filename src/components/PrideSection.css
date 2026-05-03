@@ -1,0 +1,46 @@
+.pride-header {
+  margin-bottom: 3rem;
+}
+
+.pride-title {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: 3px;
+}
+
+.pride-subtitle {
+  color: var(--primary-gold);
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.pride-image-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border: 2px solid var(--primary-gold);
+  padding: 1rem;
+}
+
+.pride-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .pride-title {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  .pride-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+  }
+  .pride-image-container {
+    padding: 0.5rem;
+    border-width: 1px;
+  }
+}
