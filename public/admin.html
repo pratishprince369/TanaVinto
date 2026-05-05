@@ -476,15 +476,6 @@
             }
         }
 
-        async function saveChanges() {
-            try {
-                await db.collection('content').doc('website').set(content);
-                alert('Changes saved successfully to Cloud (Firebase)!');
-            } catch (err) {
-                console.error('Error saving:', err);
-                alert('Failed to save changes. Check Firebase Rules.');
-            }
-        }
 
         async function uploadImage(input, path) {
             const file = input.files[0];
@@ -724,25 +715,25 @@
         }
 
         async function saveAll() {
-            // Update from static inputs
-            content.hero.title = document.getElementById('hero-title').value;
-            content.hero.subtitle = document.getElementById('hero-subtitle').value;
-            content.prideSection.title = document.getElementById('pride-title').value;
-            content.prideSection.subtitle = document.getElementById('pride-subtitle').value;
-            content.footer.logo = document.getElementById('footer-logo').value;
-            content.footer.description = document.getElementById('footer-desc').value;
-            content.wellness.title = document.getElementById('wellness-title').value;
+            try {
+                // Update from static inputs
+                content.hero.title = document.getElementById('hero-title').value;
+                content.hero.subtitle = document.getElementById('hero-subtitle').value;
+                content.prideSection.title = document.getElementById('pride-title').value;
+                content.prideSection.subtitle = document.getElementById('pride-subtitle').value;
+                content.footer.logo = document.getElementById('footer-logo').value;
+                content.footer.description = document.getElementById('footer-desc').value;
+                content.wellness.title = document.getElementById('wellness-title').value;
 
-            const res = await fetch('/api/content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(content)
-            });
-            
-            if (res.ok) {
+                await db.collection('content').doc('website').set(content);
+                
                 const notif = document.getElementById('notification');
+                notif.innerText = "Changes saved successfully to Firebase!";
                 notif.classList.add('show');
                 setTimeout(() => notif.classList.remove('show'), 3000);
+            } catch (err) {
+                console.error('Error saving:', err);
+                alert('Failed to save changes: ' + err.message);
             }
         }
 
