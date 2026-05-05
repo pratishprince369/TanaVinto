@@ -35,19 +35,19 @@ function App() {
       <PrideSection data={content.prideSection} />
       
       <section className="section bg-color-alt">
-        <CardGrid title="DESTINATIONS" items={content.destinations} linkText="View All Destinations" />
+        <CardGrid title={content.destinations.title} items={content.destinations.items} linkText="View All Destinations" />
       </section>
 
       <ExclusivelyForYou data={content.exclusive} />
 
       <section className="section bg-color-alt">
-        <CardGrid title="EXPLORE MORE" items={content.explore} linkText="View All" />
+        <CardGrid title={content.explore.title} items={content.explore.items} linkText="View All" />
       </section>
 
       <RestaurantSlider data={content.restaurants} />
 
       <section className="section bg-color-alt">
-        <CardGrid title="EVENTS AND CONFERENCES" items={content.events} linkText="View All" />
+        <CardGrid title={content.events.title} items={content.events.items} linkText="View All" />
       </section>
 
       <section className="section">

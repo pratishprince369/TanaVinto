@@ -6,11 +6,11 @@ const ExclusivelyForYou = ({ data }) => {
   const [activeIndex, setActiveIndex] = useState(1);
 
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev === data.length - 1 ? 0 : prev + 1));
+    setActiveIndex((prev) => (prev === data.items.length - 1 ? 0 : prev + 1));
   };
 
   const prevSlide = () => {
-    setActiveIndex((prev) => (prev === 0 ? data.length - 1 : prev - 1));
+    setActiveIndex((prev) => (prev === 0 ? data.items.length - 1 : prev - 1));
   };
 
   return (
@@ -18,7 +18,7 @@ const ExclusivelyForYou = ({ data }) => {
       {/* Background Image with blur */}
       <div 
         className="exclusive-bg-image" 
-        style={{ backgroundImage: `url(${data[activeIndex].image})` }}
+        style={{ backgroundImage: `url(${data.items[activeIndex].image})` }}
       ></div>
       <div className="exclusive-bg-overlay"></div>
 
@@ -27,8 +27,7 @@ const ExclusivelyForYou = ({ data }) => {
         <div className="exclusive-header">
           <div className="exclusive-title-container">
             <div className="exclusive-line"></div>
-            <h2 className="exclusive-title">EXCLUSIVELY</h2>
-            <h2 className="exclusive-subtitle">FOR YOU</h2>
+            <h2 className="exclusive-title">{data.title}</h2>
           </div>
           <div className="exclusive-text">
             Refinement and creativity intertwine with dreamlike destinations <br/>
@@ -43,10 +42,10 @@ const ExclusivelyForYou = ({ data }) => {
           </button>
           
           <div className="carousel-track">
-            {data.map((offer, index) => {
+            {data.items && data.items.map((offer, index) => {
               let position = 'next';
               if (index === activeIndex) position = 'active';
-              if (index === activeIndex - 1 || (activeIndex === 0 && index === data.length - 1)) position = 'prev';
+              if (index === activeIndex - 1 || (activeIndex === 0 && index === data.items.length - 1)) position = 'prev';
 
               return (
                 <div className={`carousel-slide ${position}`} key={offer.id}>

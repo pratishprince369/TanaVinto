@@ -28,15 +28,12 @@ const RestaurantSlider = ({ data }) => {
           <div className="restaurant-title-container">
             <span className="title-line"></span>
             <h2 className="restaurant-title">
-              OUR LEGENDARY<br/>RESTAURANT BRANDS
+              {data.title}
             </h2>
           </div>
           <div className="restaurant-desc-container">
             <p>
-              Step into the realm of our culinary legends where a symphony of
-              flavours enchants your taste buds, ambience embraces you in a
-              tapestry of elegance and the genuine warmth of our service leaves
-              you feeling truly indulged.
+              Experience the pinnacle of culinary excellence with our curated selection of legendary restaurant brands.
             </p>
           </div>
         </div>
@@ -48,7 +45,7 @@ const RestaurantSlider = ({ data }) => {
           </button>
           
           <div className="restaurant-slider" ref={sliderRef}>
-            {data.map((restaurant) => (
+            {data.items && data.items.map((restaurant) => (
               <div key={restaurant.id} className="restaurant-card">
                 <div className="r-card-image-wrapper">
                   <img src={restaurant.image} alt={restaurant.title} />

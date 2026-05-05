@@ -287,30 +287,50 @@
 
         <div id="dest-sec" class="section-card">
             <h2>Destinations</h2>
+            <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="dest-section-title" onchange="content.destinations.title = this.value">
+            </div>
             <div id="destinations-container"></div>
             <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('destinations')">+ Add Destination</button>
         </div>
 
         <div id="explore-sec" class="section-card">
             <h2>Explore More</h2>
+            <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="explore-section-title" onchange="content.explore.title = this.value">
+            </div>
             <div id="explore-container"></div>
             <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('explore')">+ Add Item</button>
         </div>
 
         <div id="rest-sec" class="section-card">
             <h2>Restaurants</h2>
+            <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="rest-section-title" onchange="content.restaurants.title = this.value">
+            </div>
             <div id="restaurants-container"></div>
             <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('restaurants')">+ Add Restaurant</button>
         </div>
 
         <div id="excl-sec" class="section-card">
             <h2>Exclusive Offers</h2>
+            <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="excl-section-title" onchange="content.exclusive.title = this.value">
+            </div>
             <div id="exclusive-container"></div>
             <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addExclusiveOffer()">+ Add Exclusive Offer</button>
         </div>
 
         <div id="event-sec" class="section-card">
             <h2>Events & Conferences</h2>
+            <div class="form-group">
+                <label>Section Title</label>
+                <input type="text" id="event-section-title" onchange="content.events.title = this.value">
+            </div>
             <div id="events-container"></div>
             <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('events')">+ Add Event</button>
         </div>
@@ -412,23 +432,24 @@
             togglePrideMediaInputs();
 
             // Destinations
+            document.getElementById('dest-section-title').value = content.destinations.title;
             const destContainer = document.getElementById('destinations-container');
             destContainer.innerHTML = '';
-            content.destinations.forEach((dest, i) => {
+            content.destinations.items.forEach((dest, i) => {
                 destContainer.innerHTML += `
                     <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; position: relative;">
                         <button class="btn" style="position: absolute; top: 10px; right: 10px; padding: 0.5rem; background: #ff4444;" onclick="removeItem('destinations', ${i})">X</button>
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" value="${dest.title}" onchange="content.destinations[${i}].title = this.value">
+                            <input type="text" value="${dest.title}" onchange="content.destinations.items[${i}].title = this.value">
                         </div>
                         <div class="form-group">
                             <label>Subtitle</label>
-                            <input type="text" value="${dest.subtitle}" onchange="content.destinations[${i}].subtitle = this.value">
+                            <input type="text" value="${dest.subtitle}" onchange="content.destinations.items[${i}].subtitle = this.value">
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <input type="file" onchange="uploadImage(this, 'destinations.${i}.image')">
+                            <input type="file" onchange="uploadImage(this, 'destinations.items.${i}.image')">
                             <img src="${dest.image}" class="image-preview">
                         </div>
                     </div>
@@ -436,23 +457,24 @@
             });
 
             // Explore More
+            document.getElementById('explore-section-title').value = content.explore.title;
             const exploreContainer = document.getElementById('explore-container');
             exploreContainer.innerHTML = '';
-            content.explore.forEach((item, i) => {
+            content.explore.items.forEach((item, i) => {
                 exploreContainer.innerHTML += `
                     <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; position: relative;">
                         <button class="btn" style="position: absolute; top: 10px; right: 10px; padding: 0.5rem; background: #ff4444;" onclick="removeItem('explore', ${i})">X</button>
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" value="${item.title}" onchange="content.explore[${i}].title = this.value">
+                            <input type="text" value="${item.title}" onchange="content.explore.items[${i}].title = this.value">
                         </div>
                         <div class="form-group">
                             <label>Subtitle</label>
-                            <input type="text" value="${item.subtitle}" onchange="content.explore[${i}].subtitle = this.value">
+                            <input type="text" value="${item.subtitle}" onchange="content.explore.items[${i}].subtitle = this.value">
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <input type="file" onchange="uploadImage(this, 'explore.${i}.image')">
+                            <input type="file" onchange="uploadImage(this, 'explore.items.${i}.image')">
                             <img src="${item.image}" class="image-preview">
                         </div>
                     </div>
@@ -460,23 +482,24 @@
             });
 
             // Restaurants
+            document.getElementById('rest-section-title').value = content.restaurants.title;
             const restContainer = document.getElementById('restaurants-container');
             restContainer.innerHTML = '';
-            content.restaurants.forEach((rest, i) => {
+            content.restaurants.items.forEach((rest, i) => {
                 restContainer.innerHTML += `
                     <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; position: relative;">
                         <button class="btn" style="position: absolute; top: 10px; right: 10px; padding: 0.5rem; background: #ff4444;" onclick="removeItem('restaurants', ${i})">X</button>
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" value="${rest.title}" onchange="content.restaurants[${i}].title = this.value">
+                            <input type="text" value="${rest.title}" onchange="content.restaurants.items[${i}].title = this.value">
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea onchange="content.restaurants[${i}].desc = this.value">${rest.desc}</textarea>
+                            <textarea onchange="content.restaurants.items[${i}].desc = this.value">${rest.desc}</textarea>
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <input type="file" onchange="uploadImage(this, 'restaurants.${i}.image')">
+                            <input type="file" onchange="uploadImage(this, 'restaurants.items.${i}.image')">
                             <img src="${rest.image}" class="image-preview">
                         </div>
                     </div>
@@ -484,23 +507,24 @@
             });
 
             // Exclusive
+            document.getElementById('excl-section-title').value = content.exclusive.title;
             const exclContainer = document.getElementById('exclusive-container');
             exclContainer.innerHTML = '';
-            content.exclusive.forEach((excl, i) => {
+            content.exclusive.items.forEach((excl, i) => {
                 exclContainer.innerHTML += `
                     <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; position: relative;">
                         <button class="btn" style="position: absolute; top: 10px; right: 10px; padding: 0.5rem; background: #ff4444;" onclick="removeExclusiveOffer(${i})">DELETE</button>
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" value="${excl.title}" onchange="content.exclusive[${i}].title = this.value">
+                            <input type="text" value="${excl.title}" onchange="content.exclusive.items[${i}].title = this.value">
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea onchange="content.exclusive[${i}].desc = this.value">${excl.desc}</textarea>
+                            <textarea onchange="content.exclusive.items[${i}].desc = this.value">${excl.desc}</textarea>
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <input type="file" onchange="uploadImage(this, 'exclusive.${i}.image')">
+                            <input type="file" onchange="uploadImage(this, 'exclusive.items.${i}.image')">
                             <img src="${excl.image}" class="image-preview">
                         </div>
                     </div>
@@ -508,23 +532,24 @@
             });
 
             // Events
+            document.getElementById('event-section-title').value = content.events.title;
             const eventContainer = document.getElementById('events-container');
             eventContainer.innerHTML = '';
-            content.events.forEach((item, i) => {
+            content.events.items.forEach((item, i) => {
                 eventContainer.innerHTML += `
                     <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; position: relative;">
                         <button class="btn" style="position: absolute; top: 10px; right: 10px; padding: 0.5rem; background: #ff4444;" onclick="removeItem('events', ${i})">X</button>
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" value="${item.title}" onchange="content.events[${i}].title = this.value">
+                            <input type="text" value="${item.title}" onchange="content.events.items[${i}].title = this.value">
                         </div>
                         <div class="form-group">
                             <label>Subtitle</label>
-                            <input type="text" value="${item.subtitle}" onchange="content.events[${i}].subtitle = this.value">
+                            <input type="text" value="${item.subtitle}" onchange="content.events.items[${i}].subtitle = this.value">
                         </div>
                         <div class="form-group">
                             <label>Image</label>
-                            <input type="file" onchange="uploadImage(this, 'events.${i}.image')">
+                            <input type="file" onchange="uploadImage(this, 'events.items.${i}.image')">
                             <img src="${item.image}" class="image-preview">
                         </div>
                     </div>
@@ -593,7 +618,7 @@
         }
 
         function addItem(key) {
-            content[key].push({
+            content[key].items.push({
                 id: Date.now(),
                 title: 'New Item',
                 subtitle: 'Subtitle',
@@ -605,13 +630,13 @@
 
         function removeItem(key, i) {
             if (confirm('Are you sure?')) {
-                content[key].splice(i, 1);
+                content[key].items.splice(i, 1);
                 populateForm();
             }
         }
 
         function addExclusiveOffer() {
-            content.exclusive.push({
+            content.exclusive.items.push({
                 id: Date.now(),
                 title: 'New Exclusive Offer',
                 desc: 'Description goes here...',
@@ -622,7 +647,7 @@
 
         function removeExclusiveOffer(i) {
             if (confirm('Are you sure you want to delete this offer?')) {
-                content.exclusive.splice(i, 1);
+                content.exclusive.items.splice(i, 1);
                 populateForm();
             }
         }
