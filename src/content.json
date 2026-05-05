@@ -1,0 +1,217 @@
+{
+  "navbar": {
+    "logo": "/images/TanaVinto-logo.png",
+    "links": [
+      {
+        "label": "DESTINATIONS",
+        "href": "#"
+      },
+      {
+        "label": "HOTELS",
+        "href": "#"
+      },
+      {
+        "label": "OFFERS",
+        "href": "#"
+      },
+      {
+        "label": "TAJ HOLIDAYS",
+        "href": "#"
+      },
+      {
+        "label": "DINING",
+        "href": "#"
+      },
+      {
+        "label": "J WELLNESS CIRCLE",
+        "href": "#"
+      }
+    ],
+    "button": {
+      "label": "Book a Resort",
+      "href": "#"
+    }
+  },
+  "hero": {
+    "images": [
+      "/images/1777973678338-WhatsApp Image 2026-04-30 at 7.03.03 PM (6).jpeg",
+      "/images/1777973682105-WhatsApp Image 2026-04-30 at 7.03.04 PM (4).jpeg",
+      "/images/1777973686174-WhatsApp Image 2026-04-30 at 7.03.03 PM (5).jpeg"
+    ],
+    "title": "TanaVinto Luxury Villas",
+    "subtitle": "Discover the finest hotels and resorts"
+  },
+  "prideSection": {
+    "title": "INDIA'S PRIDE. WORLD'S STRONGEST.",
+    "subtitle": "Taj is the strongest hotel brand in the world",
+    "mediaType": "video",
+    "image": "/images/udaipur.png",
+    "video": "/images/1777975340342-This hidden gem in Karjat feels like a Taylor Swift song. â¨ This Loop Stays villa is where the c.mp4"
+  },
+  "destinations": [
+    {
+      "id": 1,
+      "title": "Taj Exotica Resort & Spa",
+      "subtitle": "Goa",
+      "image": "/images/goa.png"
+    },
+    {
+      "id": 2,
+      "title": "Taj Palace, New Delhi",
+      "subtitle": "New Delhi",
+      "image": "/images/udaipur.png"
+    },
+    {
+      "id": 3,
+      "title": "Taj Lands End",
+      "subtitle": "Mumbai",
+      "image": "/images/london.png"
+    }
+  ],
+  "offers": [
+    {
+      "id": 1,
+      "label": "Family Getaway",
+      "title": "Create Memories Together",
+      "subtitle": "Enjoy exclusive family packages with fun activities for kids and relaxing spa sessions for adults.",
+      "image": "/images/goa.png"
+    },
+    {
+      "id": 2,
+      "label": "Suite Surprises",
+      "title": "Experience Luxury Like Never Before",
+      "subtitle": "Indulge in an unforgettable stay with complimentary upgrades and exclusive dining experiences.",
+      "image": "/images/hero.png"
+    },
+    {
+      "id": 3,
+      "label": "Taj Holidays",
+      "title": "Discover The Royal Legacy",
+      "subtitle": "Step back in time and live like royalty in our authentic heritage palaces across India.",
+      "image": "/images/udaipur.png"
+    },
+    {
+      "id": 4,
+      "label": "Romantic Escape",
+      "title": "A Perfect Evening With Your Loved One",
+      "subtitle": "Private dining under the stars, couple spa treatments, and late checkout for the perfect romantic trip.",
+      "image": "/images/london.png"
+    }
+  ],
+  "explore": [
+    {
+      "id": 1,
+      "title": "Taj Holiday Village",
+      "subtitle": "Goa",
+      "image": "/images/goa.png"
+    },
+    {
+      "id": 2,
+      "title": "Rambagh Palace",
+      "subtitle": "Jaipur",
+      "image": "/images/udaipur.png"
+    },
+    {
+      "id": 3,
+      "title": "Taj Mahal Tower",
+      "subtitle": "Mumbai",
+      "image": "/images/london.png"
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "title": "Meetings",
+      "subtitle": "Corporate events",
+      "image": "/images/london.png"
+    },
+    {
+      "id": 2,
+      "title": "Social",
+      "subtitle": "Gatherings",
+      "image": "/images/udaipur.png"
+    },
+    {
+      "id": 3,
+      "title": "Weddings",
+      "subtitle": "Make it memorable",
+      "image": "/images/goa.png"
+    }
+  ],
+  "wellness": {
+    "title": "J WELLNESS CIRCLE",
+    "image": "/images/hero.png"
+  },
+  "footer": {
+    "logo": "TAJ",
+    "description": "Experience the pinnacle of luxury, heritage, and unparalleled service. Taj Hotels resorts and palaces span the globe, offering an authentic and world-class hospitality experience.",
+    "links": {
+      "destinations": [
+        "India",
+        "United Kingdom",
+        "United States",
+        "Maldives",
+        "Dubai"
+      ],
+      "company": [
+        "About Us",
+        "Careers",
+        "Press Room",
+        "Sustainability",
+        "Contact Us"
+      ]
+    }
+  },
+  "restaurants": [
+    {
+      "id": 1,
+      "title": "MACHAN",
+      "desc": "Presenting a delightful blend of earthy simplicity and urban sophistication, Machan invites its guests to enjoy a diverse bill of fare in the joyful e...",
+      "image": "/images/udaipur.png"
+    },
+    {
+      "id": 2,
+      "title": "LOYA",
+      "desc": "LOYA takes its diners on a gastronomic journey through North India's diverse landscape, blending flavours from the Himalayan foothills, Punjab's flat ...",
+      "image": "/images/london.png"
+    },
+    {
+      "id": 3,
+      "title": "GOLDEN DRAGON",
+      "desc": "A culinary legacy of authentic Sichuan and Cantonese cuisine, featuring the famous Peking Duck and delectable dim sums.",
+      "image": "/images/goa.png"
+    },
+    {
+      "id": 4,
+      "title": "WASABI BY MORIMOTO",
+      "desc": "Experience the magic of contemporary Japanese cuisine with world-class sushi, sashimi, and rare sake selections.",
+      "image": "/images/hero.png"
+    }
+  ],
+  "exclusive": [
+    {
+      "id": 1,
+      "title": "TAJ HOLIDAYS",
+      "image": "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800",
+      "desc": "Experience the magic of Taj with curated holidays designed for you."
+    },
+    {
+      "id": 2,
+      "title": "WOYAGE - DAYCATIONS",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800",
+      "desc": "Replenish your spirit as you escape into your very own world of serenity and indulge in a day of blissful pampering with..."
+    },
+    {
+      "id": 3,
+      "title": "NEW BEGINNINGS",
+      "image": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=800",
+      "desc": "Celebrate your special moments with our exclusive new beginnings package."
+    },
+    {
+      "id": 1777976922651,
+      "title": "New Exclusive Offer",
+      "desc": "Description goes here...",
+      "image": "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=800"
+    }
+  ]
+}

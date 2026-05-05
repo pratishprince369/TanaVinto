@@ -2,34 +2,7 @@ import React, { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import './RestaurantSlider.css';
 
-const restaurantsData = [
-  {
-    id: 1,
-    title: 'MACHAN',
-    desc: 'Presenting a delightful blend of earthy simplicity and urban sophistication, Machan invites its guests to enjoy a diverse bill of fare in the joyful e...',
-    image: '/images/udaipur.png'
-  },
-  {
-    id: 2,
-    title: 'LOYA',
-    desc: 'LOYA takes its diners on a gastronomic journey through North India\'s diverse landscape, blending flavours from the Himalayan foothills, Punjab\'s flat ...',
-    image: '/images/london.png'
-  },
-  {
-    id: 3,
-    title: 'GOLDEN DRAGON',
-    desc: 'A culinary legacy of authentic Sichuan and Cantonese cuisine, featuring the famous Peking Duck and delectable dim sums.',
-    image: '/images/goa.png'
-  },
-  {
-    id: 4,
-    title: 'WASABI BY MORIMOTO',
-    desc: 'Experience the magic of contemporary Japanese cuisine with world-class sushi, sashimi, and rare sake selections.',
-    image: '/images/hero.png'
-  }
-];
-
-const RestaurantSlider = () => {
+const RestaurantSlider = ({ data }) => {
   const sliderRef = useRef(null);
 
   const scrollLeft = () => {
@@ -75,7 +48,7 @@ const RestaurantSlider = () => {
           </button>
           
           <div className="restaurant-slider" ref={sliderRef}>
-            {restaurantsData.map((restaurant) => (
+            {data.map((restaurant) => (
               <div key={restaurant.id} className="restaurant-card">
                 <div className="r-card-image-wrapper">
                   <img src={restaurant.image} alt={restaurant.title} />
