@@ -180,14 +180,63 @@
             transform: translateY(0);
         }
 
-        .nav-list-item {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
         .nav-list-item input {
             flex: 1;
+        }
+
+        /* Upload Progress Bar */
+        .upload-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            backdrop-filter: blur(5px);
+        }
+
+        .progress-box {
+            width: 80%;
+            max-width: 400px;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--primary);
+            text-align: center;
+        }
+
+        .progress-box h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), #e6c288);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .progress-text {
+            color: var(--text-dim);
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -363,6 +412,17 @@
 
     <div id="notification" class="notification">Changes saved successfully!</div>
 
+    <!-- Upload Progress Overlay -->
+    <div id="upload-overlay" class="upload-overlay">
+        <div class="progress-box">
+            <h3 id="upload-status-text">Uploading Media...</h3>
+            <div class="progress-bar-container">
+                <div id="upload-progress-fill" class="progress-bar-fill"></div>
+            </div>
+            <div id="upload-percentage" class="progress-text">0%</div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -430,24 +490,55 @@
             const file = input.files[0];
             if (!file) return;
 
+            const overlay = document.getElementById('upload-overlay');
+            const progressFill = document.getElementById('upload-progress-fill');
+            const percentageText = document.getElementById('upload-percentage');
+            const statusText = document.getElementById('upload-status-text');
+
+            overlay.style.display = 'flex';
+            progressFill.style.width = '0%';
+            percentageText.innerText = '0%';
+            statusText.innerText = file.type.startsWith('video/') ? 'Uploading Video...' : 'Uploading Image...';
+
             try {
                 const fileName = Date.now() + '-' + file.name;
-                const storageRef = storage.ref('images/' + fileName);
+                const folder = file.type.startsWith('video/') ? 'videos/' : 'images/';
+                const storageRef = storage.ref(folder + fileName);
                 
-                const snapshot = await storageRef.put(file);
-                const url = await snapshot.ref.getDownloadURL();
+                const uploadTask = storageRef.put(file);
 
-                // Update content object dynamically
-                const keys = path.split('.');
-                let obj = content;
-                for (let i = 0; i < keys.length - 1; i++) {
-                    obj = obj[keys[i]];
-                }
-                obj[keys[keys.length - 1]] = url;
-                
-                populateForm();
-                alert('Image uploaded successfully!');
+                return new Promise((resolve, reject) => {
+                    uploadTask.on('state_changed', 
+                        (snapshot) => {
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            progressFill.style.width = progress + '%';
+                            percentageText.innerText = Math.round(progress) + '%';
+                        }, 
+                        (error) => {
+                            overlay.style.display = 'none';
+                            console.error('Upload error:', error);
+                            alert('Upload failed: ' + error.message);
+                            reject(error);
+                        }, 
+                        async () => {
+                            const url = await uploadTask.snapshot.ref.getDownloadURL();
+                            
+                            // Update content object dynamically
+                            const keys = path.split('.');
+                            let obj = content;
+                            for (let i = 0; i < keys.length - 1; i++) {
+                                obj = obj[keys[i]];
+                            }
+                            obj[keys[keys.length - 1]] = url;
+                            
+                            overlay.style.display = 'none';
+                            populateForm();
+                            resolve(url);
+                        }
+                    );
+                });
             } catch (err) {
+                overlay.style.display = 'none';
                 console.error('Upload error:', err);
                 alert('Upload failed: ' + err.message);
             }
@@ -630,28 +721,6 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
-        }
-
-        async function uploadImage(input, path) {
-            const formData = new FormData();
-            formData.append('image', input.files[0]);
-            
-            const res = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await res.json();
-            
-            // Update local content object
-            const parts = path.split('.');
-            let current = content;
-            for (let i = 0; i < parts.length - 1; i++) {
-                current = current[parts[i]];
-            }
-            current[parts[parts.length - 1]] = data.url;
-            
-            // Update preview
-            input.nextElementSibling.src = data.url;
         }
 
         async function saveAll() {
