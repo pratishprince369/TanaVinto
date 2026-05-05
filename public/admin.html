@@ -358,9 +358,19 @@
         }
 
         async function loadContent() {
-            const res = await fetch('/api/content');
-            content = await res.json();
-            populateForm();
+            try {
+                // Try to fetch from the local admin server first
+                let res = await fetch('/api/content');
+                if (!res.ok) {
+                    // Fallback for Vercel: try to fetch the static content.json from the public folder
+                    res = await fetch('/content.json');
+                }
+                content = await res.json();
+                populateForm();
+            } catch (err) {
+                console.error('Error loading content:', err);
+                alert('Could not load content. Make sure you are either running the local server or have deployed content.json to public.');
+            }
         }
 
         function populateForm() {
