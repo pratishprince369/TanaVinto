@@ -6,21 +6,21 @@ const destinations = [
   {
     id: 1,
     title: 'London',
-    image: '/images/london.png',
+    image: '/images/london.webp',
     hotels: 2,
     description: 'Experience British elegance with Taj luxury.'
   },
   {
     id: 2,
     title: 'Udaipur',
-    image: '/images/udaipur.png',
+    image: '/images/udaipur.webp',
     hotels: 4,
     description: 'Palaces that float on tranquil waters.'
   },
   {
     id: 3,
     title: 'Goa',
-    image: '/images/goa.png',
+    image: '/images/goa.webp',
     hotels: 5,
     description: 'Sun, sand, and signature Taj hospitality.'
   }

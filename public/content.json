@@ -1,6 +1,6 @@
 {
   "navbar": {
-    "logo": "/images/TanaVinto-logo.png",
+    "logo": "/images/TanaVinto-logo.webp",
     "links": [
       {
         "label": "DESTINATIONS",
@@ -34,9 +34,9 @@
   },
   "hero": {
     "images": [
-      "/images/hero.png",
-      "/images/udaipur.png",
-      "/images/goa.png"
+      "/images/hero.webp",
+      "/images/udaipur.webp",
+      "/images/goa.webp"
     ],
     "title": "TanaVinto Luxury Villas",
     "subtitle": "Discover the finest hotels and resorts"
@@ -45,7 +45,7 @@
     "title": "INDIA'S PRIDE. WORLD'S STRONGEST.",
     "subtitle": "Taj is the strongest hotel brand in the world",
     "mediaType": "video",
-    "image": "/images/udaipur.png",
+    "image": "/images/udaipur.webp",
     "video": ""
   },
   "destinations": {
@@ -55,19 +55,19 @@
         "id": 1,
         "title": "Taj Exotica Resort & Spa",
         "subtitle": "Goa",
-        "image": "/images/goa.png"
+        "image": "/images/goa.webp"
       },
       {
         "id": 2,
         "title": "Taj Palace, New Delhi",
         "subtitle": "New Delhi",
-        "image": "/images/udaipur.png"
+        "image": "/images/udaipur.webp"
       },
       {
         "id": 3,
         "title": "Taj Lands End",
         "subtitle": "Mumbai",
-        "image": "/images/london.png"
+        "image": "/images/london.webp"
       }
     ]
   },
@@ -78,19 +78,19 @@
         "id": 1,
         "title": "Taj Holiday Village",
         "subtitle": "Goa",
-        "image": "/images/goa.png"
+        "image": "/images/goa.webp"
       },
       {
         "id": 2,
         "title": "Rambagh Palace",
         "subtitle": "Jaipur",
-        "image": "/images/udaipur.png"
+        "image": "/images/udaipur.webp"
       },
       {
         "id": 3,
         "title": "Taj Mahal Tower",
         "subtitle": "Mumbai",
-        "image": "/images/london.png"
+        "image": "/images/london.webp"
       }
     ]
   },
@@ -101,19 +101,19 @@
         "id": 1,
         "title": "Meetings",
         "subtitle": "Corporate events",
-        "image": "/images/london.png"
+        "image": "/images/london.webp"
       },
       {
         "id": 2,
         "title": "Social",
         "subtitle": "Gatherings",
-        "image": "/images/udaipur.png"
+        "image": "/images/udaipur.webp"
       },
       {
         "id": 3,
         "title": "Weddings",
         "subtitle": "Make it memorable",
-        "image": "/images/goa.png"
+        "image": "/images/goa.webp"
       }
     ]
   },
@@ -124,25 +124,25 @@
         "id": 1,
         "title": "MACHAN",
         "desc": "Presenting a delightful blend of earthy simplicity and urban sophistication, Machan invites its guests to enjoy a diverse bill of fare in the joyful e...",
-        "image": "/images/udaipur.png"
+        "image": "/images/udaipur.webp"
       },
       {
         "id": 2,
         "title": "LOYA",
         "desc": "LOYA takes its diners on a gastronomic journey through North India's diverse landscape, blending flavours from the Himalayan foothills, Punjab's flat ...",
-        "image": "/images/london.png"
+        "image": "/images/london.webp"
       },
       {
         "id": 3,
         "title": "GOLDEN DRAGON",
         "desc": "A culinary legacy of authentic Sichuan and Cantonese cuisine, featuring the famous Peking Duck and delectable dim sums.",
-        "image": "/images/goa.png"
+        "image": "/images/goa.webp"
       },
       {
         "id": 4,
         "title": "WASABI BY MORIMOTO",
         "desc": "Experience the magic of contemporary Japanese cuisine with world-class sushi, sashimi, and rare sake selections.",
-        "image": "/images/hero.png"
+        "image": "/images/hero.webp"
       }
     ]
   },
@@ -171,7 +171,7 @@
   },
   "wellness": {
     "title": "J WELLNESS CIRCLE",
-    "image": "/images/hero.png"
+    "image": "/images/hero.webp"
   },
   "footer": {
     "logo": "TAJ",
