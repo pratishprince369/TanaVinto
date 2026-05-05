@@ -18,18 +18,23 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Safety Timeout: If Firebase doesn't respond in 5s, show local content
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      console.log('Firebase timeout - using local fallback');
+    }, 5000);
+
     const fetchContent = async () => {
       try {
         const docRef = doc(db, 'content', 'website');
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setContent(docSnap.data());
-        } else {
-          console.log('No such document in Firestore, using local fallback');
         }
       } catch (err) {
         console.error('Error fetching from Firebase:', err);
       } finally {
+        clearTimeout(timeout);
         setLoading(false);
       }
     };
