@@ -8,22 +8,32 @@ import ExclusivelyForYou from './components/ExclusivelyForYou';
 import Footer from './components/Footer';
 import './index.css';
 
+import { db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
 import initialContent from './content.json';
 
 function App() {
   const [content, setContent] = useState(initialContent);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Only try to fetch if we're on localhost (where the admin server might be running)
-    if (window.location.hostname === 'localhost') {
-      fetch('/api/content')
-        .then(res => res.json())
-        .then(data => {
-          setContent(data);
-        })
-        .catch(err => console.log('Admin server not running, using local content.json'));
-    }
+    const fetchContent = async () => {
+      try {
+        const docRef = doc(db, 'content', 'website');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setContent(docSnap.data());
+        } else {
+          console.log('No such document in Firestore, using local fallback');
+        }
+      } catch (err) {
+        console.error('Error fetching from Firebase:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchContent();
   }, []);
 
   if (loading || !content) return <div className="loading">Loading...</div>;

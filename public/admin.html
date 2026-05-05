@@ -363,33 +363,93 @@
 
     <div id="notification" class="notification">Changes saved successfully!</div>
 
-    <script>
-        let content = {};
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
 
-        function login() {
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyBWTkTtLcpFBlWqwjP5zF1tRLTg02P6PQs",
+            authDomain: "tanavinto.firebaseapp.com",
+            projectId: "tanavinto",
+            storageBucket: "tanavinto.firebasestorage.app",
+            messagingSenderId: "605325022400",
+            appId: "1:605325022400:web:6c622947e1a883a55d0925"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        let content = null;
+
+        async function login() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
             if (user === 'admin' && pass === 'admin123') {
                 document.getElementById('login-overlay').style.display = 'none';
-                loadContent();
+                await loadContent();
             } else {
-                alert('Invalid Credentials');
+                alert('Invalid credentials');
             }
         }
 
         async function loadContent() {
             try {
-                // Try to fetch from the local admin server first
-                let res = await fetch('/api/content');
-                if (!res.ok) {
-                    // Fallback for Vercel: try to fetch the static content.json from the public folder
-                    res = await fetch('/content.json');
+                const docRef = db.collection('content').doc('website');
+                const docSnap = await docRef.get();
+                
+                if (docSnap.exists) {
+                    content = docSnap.data();
+                } else {
+                    // If no data in Firebase, load from the local content.json fallback
+                    const res = await fetch('/content.json');
+                    content = await res.json();
                 }
-                content = await res.json();
                 populateForm();
             } catch (err) {
                 console.error('Error loading content:', err);
-                alert('Could not load content. Make sure you are either running the local server or have deployed content.json to public.');
+                alert('Error loading content from Firebase. Please check your console/rules.');
+            }
+        }
+
+        async function saveChanges() {
+            try {
+                await db.collection('content').doc('website').set(content);
+                alert('Changes saved successfully to Cloud (Firebase)!');
+            } catch (err) {
+                console.error('Error saving:', err);
+                alert('Failed to save changes. Check Firebase Rules.');
+            }
+        }
+
+        async function uploadImage(input, path) {
+            const file = input.files[0];
+            if (!file) return;
+
+            try {
+                const fileName = Date.now() + '-' + file.name;
+                const storageRef = storage.ref('images/' + fileName);
+                
+                const snapshot = await storageRef.put(file);
+                const url = await snapshot.ref.getDownloadURL();
+
+                // Update content object dynamically
+                const keys = path.split('.');
+                let obj = content;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    obj = obj[keys[i]];
+                }
+                obj[keys[keys.length - 1]] = url;
+                
+                populateForm();
+                alert('Image uploaded successfully!');
+            } catch (err) {
+                console.error('Upload error:', err);
+                alert('Upload failed: ' + err.message);
             }
         }
 
