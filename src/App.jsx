@@ -8,17 +8,25 @@ import ExclusivelyForYou from './components/ExclusivelyForYou';
 import Footer from './components/Footer';
 import './index.css';
 
+import initialContent from './content.json';
+
 function App() {
-  const [content, setContent] = useState(null);
+  const [content, setContent] = useState(initialContent);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/src/content.json')
-      .then(res => res.json())
-      .then(data => setContent(data))
-      .catch(err => console.error('Error loading content:', err));
+    // Only try to fetch if we're on localhost (where the admin server might be running)
+    if (window.location.hostname === 'localhost') {
+      fetch('/api/content')
+        .then(res => res.json())
+        .then(data => {
+          setContent(data);
+        })
+        .catch(err => console.log('Admin server not running, using local content.json'));
+    }
   }, []);
 
-  if (!content) return <div>Loading...</div>;
+  if (loading || !content) return <div className="loading">Loading...</div>;
 
   return (
     <div className="app">
