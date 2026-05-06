@@ -611,15 +611,19 @@
                     body: JSON.stringify(content)
                 });
 
-                if (!response.ok) throw new Error('Save failed');
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Save failed');
+                }
                 
                 showNotification("Changes saved successfully!");
             } catch (err) {
                 console.error(err);
+                let msg = err.message || "Unknown error";
                 if (window.location.hostname.includes('vercel.app')) {
-                    alert("Failed to save to Vercel. Please ensure you have added GITHUB_TOKEN to your Vercel Environment Variables. Check the console for details.");
+                    alert("Failed to save to Vercel: " + msg + "\n\n1. Ensure GITHUB_TOKEN is added to Vercel Environment Variables.\n2. Ensure the token has 'Contents' write permission.");
                 } else {
-                    alert("Failed to save to server. This usually happens if the local admin server is not running. Run 'node admin-server.js' to enable saving.");
+                    alert("Failed to save to server: " + msg + "\n\nMake sure 'node admin-server.js' is running locally.");
                 }
             } finally {
                 btn.innerText = originalText;
