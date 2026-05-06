@@ -20,29 +20,37 @@ function App() {
 
   if (!content) return <div className="loading">Loading...</div>;
 
+  const slugify = (text) => {
+    return text.toLowerCase().replace(/[^\w ]+/g, '').replace(/ +/g, '-');
+  };
+
   return (
     <div className="app">
       <Navbar data={content.navbar} />
       <Hero data={content.hero} />
       <PrideSection data={content.prideSection} />
       
-      <section className="section bg-color-alt">
+      <section id={slugify(content.destinations.title)} className="section bg-color-alt">
         <CardGrid title={content.destinations.title} items={content.destinations.items} linkText="View All Destinations" />
       </section>
 
-      <ExclusivelyForYou data={content.exclusive} />
+      <div id={slugify(content.exclusive.title)}>
+        <ExclusivelyForYou data={content.exclusive} />
+      </div>
 
-      <section className="section bg-color-alt">
+      <section id={slugify(content.explore.title)} className="section bg-color-alt">
         <CardGrid title={content.explore.title} items={content.explore.items} linkText="View All" />
       </section>
 
-      <RestaurantSlider data={content.restaurants} />
+      <div id={slugify(content.restaurants.title)}>
+        <RestaurantSlider data={content.restaurants} />
+      </div>
 
-      <section className="section bg-color-alt">
+      <section id={slugify(content.events.title)} className="section bg-color-alt">
         <CardGrid title={content.events.title} items={content.events.items} linkText="View All" />
       </section>
 
-      <section className="section">
+      <section id={slugify(content.wellness.title)} className="section">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title" style={{fontFamily: 'var(--font-heading)'}}>{content.wellness.title}</h2>
