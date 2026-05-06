@@ -100,6 +100,14 @@
             border-radius: 8px;
         }
 
+        .headline-group {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 2rem;
+        }
+
         label {
             display: block;
             margin-bottom: 0.5rem;
@@ -348,30 +356,50 @@
 
         <div id="dest-sec" class="section-card">
             <h2>Destinations</h2>
+            <div class="headline-group">
+                <label>Section Headline (Rename "DESTINATIONS")</label>
+                <input type="text" id="dest-headline" onchange="content.destinations.title = this.value">
+            </div>
             <div id="destinations-container"></div>
             <button class="btn" onclick="addItem('destinations')">+ Add Destination</button>
         </div>
 
         <div id="explore-sec" class="section-card">
             <h2>Explore More</h2>
+            <div class="headline-group">
+                <label>Section Headline (Rename "EXPLORE MORE")</label>
+                <input type="text" id="explore-headline" onchange="content.explore.title = this.value">
+            </div>
             <div id="explore-container"></div>
             <button class="btn" onclick="addItem('explore')">+ Add Explore Item</button>
         </div>
 
         <div id="exclusive-sec" class="section-card">
             <h2>Exclusive Offers</h2>
+            <div class="headline-group">
+                <label>Section Headline (Rename "EXCLUSIVELY FOR YOU")</label>
+                <input type="text" id="exclusive-headline" onchange="content.exclusive.title = this.value">
+            </div>
             <div id="exclusive-container"></div>
             <button class="btn" onclick="addItem('exclusive')">+ Add Offer</button>
         </div>
 
         <div id="rest-sec" class="section-card">
             <h2>Restaurants</h2>
+            <div class="headline-group">
+                <label>Section Headline (Rename "AUTHENTIC DINING")</label>
+                <input type="text" id="rest-headline" onchange="content.restaurants.title = this.value">
+            </div>
             <div id="restaurants-container"></div>
             <button class="btn" onclick="addItem('restaurants')">+ Add Restaurant</button>
         </div>
 
         <div id="event-sec" class="section-card">
             <h2>Events & Conferences</h2>
+            <div class="headline-group">
+                <label>Section Headline (Rename "EVENTS AND CONFERENCES")</label>
+                <input type="text" id="event-headline" onchange="content.events.title = this.value">
+            </div>
             <div id="events-container"></div>
             <button class="btn" onclick="addItem('events')">+ Add Event</button>
         </div>
@@ -385,7 +413,7 @@
                 <div id="wellness.image-url" class="url-box"></div>
             </div>
             <div class="form-group">
-                <label>Title</label>
+                <label>Section Headline (Rename "J WELLNESS CIRCLE")</label>
                 <input type="text" id="wellness-title" onchange="content.wellness.title = this.value">
             </div>
         </div>
@@ -512,6 +540,14 @@
             document.getElementById('pride-title').value = content.prideSection.title;
             document.getElementById('pride-subtitle').value = content.prideSection.subtitle;
 
+            // Headlines
+            document.getElementById('dest-headline').value = content.destinations.title;
+            document.getElementById('explore-headline').value = content.explore.title;
+            document.getElementById('exclusive-headline').value = content.exclusive.title;
+            document.getElementById('rest-headline').value = content.restaurants.title;
+            document.getElementById('event-headline').value = content.events.title;
+            document.getElementById('wellness-title').value = content.wellness.title;
+
             // Collections Sections
             renderList('destinations', 'destinations-container');
             renderList('explore', 'explore-container');
@@ -522,7 +558,6 @@
             // Wellness
             document.getElementById('wellness-preview').src = content.wellness.image;
             document.getElementById('wellness.image-url').innerText = content.wellness.image;
-            document.getElementById('wellness-title').value = content.wellness.title;
 
             // Footer
             document.getElementById('footer-logo').value = content.footer.logo;
@@ -531,22 +566,22 @@
 
         function renderList(key, containerId) {
             const container = document.getElementById(containerId);
-            container.innerHTML = `<h3>${key.toUpperCase()}</h3>`;
+            container.innerHTML = '';
             content[key].items.forEach((item, i) => {
                 container.innerHTML += `
                     <div class="item-card">
                         <button class="delete-btn" onclick="removeItem('${key}', ${i})">Delete</button>
-                        <label>Title</label>
+                        <label>Item Title</label>
                         <input type="text" value="${item.title}" onchange="content.${key}.items[${i}].title = this.value">
                         ${item.subtitle !== undefined ? `
-                            <label style="margin-top:10px;">Subtitle</label>
+                            <label style="margin-top:10px;">Item Subtitle</label>
                             <input type="text" value="${item.subtitle}" onchange="content.${key}.items[${i}].subtitle = this.value">
                         ` : ''}
                         ${item.desc !== undefined ? `
-                            <label style="margin-top:10px;">Description</label>
+                            <label style="margin-top:10px;">Item Description</label>
                             <textarea onchange="content.${key}.items[${i}].desc = this.value">${item.desc}</textarea>
                         ` : ''}
-                        <label style="margin-top:10px;">Image</label>
+                        <label style="margin-top:10px;">Item Image</label>
                         <input type="file" onchange="uploadImage(this, '${key}.items.${i}.image')">
                         <img src="${item.image}" class="image-preview">
                         <div class="url-box">${item.image}</div>
