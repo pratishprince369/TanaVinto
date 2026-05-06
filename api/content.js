@@ -1,4 +1,4 @@
-import { v3 as octokit } from '@octokit/request'; // We can use fetch instead to avoid dependencies
+// Using native fetch to avoid dependencies
 
 export default async function handler(req, res) {
   const { GITHUB_TOKEN, REPO_OWNER, REPO_NAME } = process.env;
