@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Media Tool | TanaVinto</title>
+    <title>Admin Panel | TanaVinto</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -125,13 +125,6 @@
             filter: brightness(1.2);
         }
 
-        .btn-copy {
-            background: #444;
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-        }
-
         .image-preview {
             width: 100px;
             height: 100px;
@@ -141,14 +134,14 @@
             border: 1px solid var(--border);
         }
 
-        .url-display {
+        .url-box {
             background: #000;
-            padding: 0.5rem;
+            padding: 5px 10px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--primary);
+            margin-top: 5px;
             word-break: break-all;
-            margin-top: 0.5rem;
             border: 1px solid var(--border);
         }
 
@@ -198,7 +191,7 @@
             transform: translateY(0);
         }
 
-        /* Upload Progress Overlay */
+        /* Upload Progress Bar */
         .upload-overlay {
             position: fixed;
             top: 0;
@@ -224,13 +217,6 @@
             text-align: center;
         }
 
-        .progress-box h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-        }
-
         .progress-bar-container {
             width: 100%;
             height: 8px;
@@ -246,19 +232,6 @@
             background: linear-gradient(90deg, var(--primary), #e6c288);
             transition: width 0.3s ease;
             box-shadow: 0 0 10px var(--primary);
-        }
-
-        .progress-text {
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
-
-        .settings-bar {
-            background: #2a2a2a;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            border: 1px solid var(--primary);
         }
     </style>
 </head>
@@ -279,118 +252,116 @@
 
     <div class="sidebar">
         <h1>TANAVINTO</h1>
-        <div class="nav-item active" onclick="showSection('config-sec')">Settings</div>
+        <div class="nav-item active" onclick="showSection('config-sec')">Tool Settings</div>
         <div class="nav-item" onclick="showSection('navbar-sec')">Header & Logo</div>
         <div class="nav-item" onclick="showSection('hero-sec')">Hero Section</div>
         <div class="nav-item" onclick="showSection('pride-sec')">Pride Section</div>
         <div class="nav-item" onclick="showSection('dest-sec')">Destinations</div>
         <div class="nav-item" onclick="showSection('rest-sec')">Restaurants</div>
+        <div class="nav-item" onclick="showSection('footer-sec')">Footer</div>
         
         <div style="margin-top: auto; padding-top: 2rem;">
-            <button class="btn" style="width: 100%;" onclick="copyJSON()">COPY FULL JSON</button>
-            <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.5rem; text-align: center;">Update code manually using copied JSON</p>
+            <button class="btn" style="width: 100%; background: #444;" onclick="copyJSON()">COPY UPDATED JSON</button>
+            <p style="font-size: 0.65rem; color: var(--text-dim); margin-top: 5px; text-align: center;">Paste this in public/content.json</p>
         </div>
     </div>
 
     <div class="main-content">
         
         <div id="config-sec" class="section-card active">
-            <h2>Configuration</h2>
-            <div class="settings-bar">
-                <div class="form-group">
-                    <label>Cloudinary Cloud Name</label>
-                    <input type="text" id="cloud-name" value="drbeq3h8m" placeholder="e.g. drbeq3h8m">
-                </div>
-                <div class="form-group">
-                    <label>Unsigned Upload Preset</label>
-                    <input type="text" id="upload-preset" value="ml_default" placeholder="e.g. ml_default">
-                    <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">
-                        Note: You must enable "Unsigned Upload" in Cloudinary settings to use this tool online.
-                    </p>
-                </div>
+            <h2>Tool Settings</h2>
+            <div class="form-group" style="background: #2a2a2a; padding: 15px; border-radius: 8px; border: 1px solid var(--primary);">
+                <label>Cloudinary Cloud Name</label>
+                <input type="text" id="cloud-name" value="drbeq3h8m">
+                <label style="margin-top: 15px;">Unsigned Upload Preset (Crucial for Vercel)</label>
+                <input type="text" id="upload-preset" value="ml_default">
+                <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 10px;">
+                    Tip: Create an "Unsigned" preset in Cloudinary Settings -> Upload tab.
+                </p>
             </div>
         </div>
 
         <div id="navbar-sec" class="section-card">
-            <h2>Header & Logo</h2>
+            <h2>Header & Navigation</h2>
             <div class="form-group">
                 <label>Logo Image</label>
                 <input type="file" onchange="uploadImage(this, 'navbar.logo')">
                 <img id="logo-preview" class="image-preview">
-                <div id="logo-url" class="url-display">URL will appear here...</div>
-                <button class="btn btn-copy" onclick="copyText('logo-url')">Copy URL</button>
+                <div id="navbar.logo-url" class="url-box">URL will appear here...</div>
             </div>
         </div>
 
         <div id="hero-sec" class="section-card">
             <h2>Hero Section</h2>
-            <div class="form-group">
-                <label>Upload New Hero Image</label>
-                <input type="file" onchange="uploadImage(this, 'hero.new')">
-                <div id="hero-url" class="url-display">URL will appear here...</div>
-                <button class="btn btn-copy" onclick="copyText('hero-url')">Copy URL</button>
-            </div>
             <div id="hero-images-container"></div>
+            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addHeroImage()">+ Add Image</button>
+            <div class="form-group" style="margin-top: 2rem;">
+                <label>Headline</label>
+                <input type="text" id="hero-title" onchange="content.hero.title = this.value">
+            </div>
+            <div class="form-group">
+                <label>Subtitle</label>
+                <textarea id="hero-subtitle" onchange="content.hero.subtitle = this.value"></textarea>
+            </div>
         </div>
 
         <div id="pride-sec" class="section-card">
             <h2>Pride Section</h2>
             <div class="form-group">
-                <label>Main Image/Video</label>
-                <input type="file" onchange="uploadImage(this, 'prideSection.media')">
-                <div id="pride-url" class="url-display">URL will appear here...</div>
-                <button class="btn btn-copy" onclick="copyText('pride-url')">Copy URL</button>
+                <label>Media</label>
+                <input type="file" onchange="uploadImage(this, 'prideSection.image')">
+                <img id="pride-preview" class="image-preview" style="width: 100%; height: 200px;">
+                <div id="prideSection.image-url" class="url-box">URL will appear here...</div>
+            </div>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="pride-title" onchange="content.prideSection.title = this.value">
+            </div>
+            <div class="form-group">
+                <label>Subtitle</label>
+                <textarea id="pride-subtitle" onchange="content.prideSection.subtitle = this.value"></textarea>
             </div>
         </div>
 
         <div id="dest-sec" class="section-card">
             <h2>Destinations</h2>
-            <div class="form-group">
-                <label>Upload Destination Image</label>
-                <input type="file" onchange="uploadImage(this, 'destinations.new')">
-                <div id="dest-url" class="url-display">URL will appear here...</div>
-                <button class="btn btn-copy" onclick="copyText('dest-url')">Copy URL</button>
-            </div>
+            <div id="destinations-container"></div>
+            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('destinations')">+ Add Destination</button>
         </div>
 
         <div id="rest-sec" class="section-card">
             <h2>Restaurants</h2>
+            <div id="restaurants-container"></div>
+            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('restaurants')">+ Add Restaurant</button>
+        </div>
+
+        <div id="footer-sec" class="section-card">
+            <h2>Footer</h2>
             <div class="form-group">
-                <label>Upload Restaurant Image</label>
-                <input type="file" onchange="uploadImage(this, 'restaurants.new')">
-                <div id="rest-url" class="url-display">URL will appear here...</div>
-                <button class="btn btn-copy" onclick="copyText('rest-url')">Copy URL</button>
+                <label>Logo Text</label>
+                <input type="text" id="footer-logo" onchange="content.footer.logo = this.value">
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="footer-desc" onchange="content.footer.description = this.value"></textarea>
             </div>
         </div>
     </div>
 
-    <div id="notification" class="notification">URL Copied!</div>
+    <div id="notification" class="notification">JSON Copied!</div>
 
-    <!-- Upload Progress Overlay -->
     <div id="upload-overlay" class="upload-overlay">
         <div class="progress-box">
             <h3 id="upload-status-text">Uploading to Cloudinary...</h3>
             <div class="progress-bar-container">
                 <div id="upload-progress-fill" class="progress-bar-fill"></div>
             </div>
-            <div id="upload-percentage" class="progress-text">0%</div>
+            <div id="upload-percentage" class="progress-text">10%</div>
         </div>
     </div>
 
     <script>
-        let content = {};
-        
-        // Try to load local content as starting point
-        async function loadContent() {
-            try {
-                const res = await fetch('/content.json');
-                if (res.ok) {
-                    content = await res.json();
-                }
-            } catch (err) {
-                console.log('Using empty content object');
-            }
-        }
+        let content = null;
 
         async function login() {
             const user = document.getElementById('username').value;
@@ -403,6 +374,18 @@
             }
         }
 
+        async function loadContent() {
+            try {
+                const res = await fetch('/content.json');
+                if (!res.ok) throw new Error("Failed to load content.json");
+                content = await res.json();
+                populateForm();
+            } catch (err) {
+                console.error('Error loading content:', err);
+                alert('Could not load existing content. Make sure content.json is in the public folder.');
+            }
+        }
+
         async function uploadImage(input, path) {
             const file = input.files[0];
             if (!file) return;
@@ -410,17 +393,10 @@
             const cloudName = document.getElementById('cloud-name').value;
             const preset = document.getElementById('upload-preset').value;
 
-            if (!cloudName || !preset) {
-                alert("Please enter Cloudinary Cloud Name and Preset in Settings.");
-                return;
-            }
-
             const overlay = document.getElementById('upload-overlay');
             const progressFill = document.getElementById('upload-progress-fill');
             const percentageText = document.getElementById('upload-percentage');
             overlay.style.display = 'flex';
-            progressFill.style.width = '10%';
-            percentageText.innerText = '10%';
 
             try {
                 const formData = new FormData();
@@ -441,58 +417,96 @@
                 const result = await response.json();
                 const url = result.secure_url;
                 
+                // Update content object
+                const keys = path.split('.');
+                let obj = content;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    obj = obj[keys[i]];
+                }
+                obj[keys[keys.length - 1]] = url;
+                
                 progressFill.style.width = '100%';
                 percentageText.innerText = '100%';
 
-                // Display URL in the corresponding box
-                let displayId = "";
-                if (path.includes('navbar')) displayId = "logo-url";
-                else if (path.includes('hero')) displayId = "hero-url";
-                else if (path.includes('pride')) displayId = "pride-url";
-                else if (path.includes('destinations')) displayId = "dest-url";
-                else if (path.includes('restaurants')) displayId = "rest-url";
+                // Show URL
+                const urlBox = document.getElementById(path + "-url");
+                if (urlBox) urlBox.innerText = url;
 
-                if (displayId) {
-                    document.getElementById(displayId).innerText = url;
-                }
-
-                if (path.includes('navbar.logo')) {
-                    document.getElementById('logo-preview').src = url;
-                }
-                
                 setTimeout(() => {
                     overlay.style.display = 'none';
-                    showNotification("Image uploaded and URL generated!");
+                    populateForm();
+                    showNotification("Uploaded! Copy URL or Export JSON.");
                 }, 500);
-                
-                return url;
             } catch (err) {
                 overlay.style.display = 'none';
-                console.error('Upload error:', err);
-                alert('Upload failed: ' + err.message + "\n\nTip: Make sure you have created an 'Unsigned' upload preset in Cloudinary.");
+                alert('Upload failed: ' + err.message + "\n\nTip: Make sure your preset is 'Unsigned' in Cloudinary Settings.");
             }
         }
 
-        function copyText(id) {
-            const text = document.getElementById(id).innerText;
-            if (text.startsWith('http')) {
-                navigator.clipboard.writeText(text);
-                showNotification("URL Copied!");
-            } else {
-                alert("Please upload an image first.");
-            }
+        function populateForm() {
+            if (!content) return;
+
+            // Navbar
+            document.getElementById('logo-preview').src = content.navbar.logo;
+            document.getElementById('navbar.logo-url').innerText = content.navbar.logo;
+
+            // Hero
+            const heroImgContainer = document.getElementById('hero-images-container');
+            heroImgContainer.innerHTML = '<h3>Hero Images</h3>';
+            content.hero.images.forEach((img, i) => {
+                heroImgContainer.innerHTML += `
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; background: #2a2a2a; padding: 10px; border-radius: 8px;">
+                        <img src="${img}" style="width: 50px; height: 50px; object-fit: cover;">
+                        <input type="file" onchange="uploadImage(this, 'hero.images.${i}')" style="flex: 1;">
+                        <button class="btn" style="padding: 0.5rem; background: #ff4444;" onclick="removeHeroImage(${i})">X</button>
+                    </div>
+                `;
+            });
+            document.getElementById('hero-title').value = content.hero.title;
+            document.getElementById('hero-subtitle').value = content.hero.subtitle;
+
+            // Pride
+            document.getElementById('pride-preview').src = content.prideSection.image;
+            document.getElementById('prideSection.image-url').innerText = content.prideSection.image;
+            document.getElementById('pride-title').value = content.prideSection.title;
+            document.getElementById('pride-subtitle').value = content.prideSection.subtitle;
+
+            // Destinations
+            const destContainer = document.getElementById('destinations-container');
+            destContainer.innerHTML = '<h3>Destinations</h3>';
+            content.destinations.items.forEach((dest, i) => {
+                destContainer.innerHTML += `
+                    <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
+                        <input type="text" value="${dest.title}" onchange="content.destinations.items[${i}].title = this.value" placeholder="Title">
+                        <input type="file" onchange="uploadImage(this, 'destinations.items.${i}.image')" style="margin-top: 10px;">
+                        <div class="url-box">${dest.image}</div>
+                    </div>
+                `;
+            });
+
+            // Footer
+            document.getElementById('footer-logo').value = content.footer.logo;
+            document.getElementById('footer-desc').value = content.footer.description;
         }
 
         function copyJSON() {
             navigator.clipboard.writeText(JSON.stringify(content, null, 2));
-            showNotification("JSON Copied! Paste it in content.json");
+            showNotification("JSON Copied! Paste it into public/content.json");
         }
 
-        function showNotification(msg) {
-            const notif = document.getElementById('notification');
-            notif.innerText = msg;
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.remove('show'), 3000);
+        function addItem(key) {
+            content[key].items.push({ title: 'New Item', image: '' });
+            populateForm();
+        }
+
+        function addHeroImage() {
+            content.hero.images.push('');
+            populateForm();
+        }
+
+        function removeHeroImage(i) {
+            content.hero.images.splice(i, 1);
+            populateForm();
         }
 
         function showSection(id) {
@@ -500,6 +514,13 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             event.target.classList.add('active');
+        }
+
+        function showNotification(msg) {
+            const notif = document.getElementById('notification');
+            notif.innerText = msg;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
         }
     </script>
 </body>

@@ -8,10 +8,17 @@ import ExclusivelyForYou from './components/ExclusivelyForYou';
 import Footer from './components/Footer';
 import './index.css';
 
-import initialContent from './content.json';
-
 function App() {
-  const [content, setContent] = useState(initialContent);
+  const [content, setContent] = useState(null);
+
+  useEffect(() => {
+    fetch('/content.json')
+      .then(res => res.json())
+      .then(data => setContent(data))
+      .catch(err => console.error("Error loading content:", err));
+  }, []);
+
+  if (!content) return <div className="loading">Loading...</div>;
 
   return (
     <div className="app">
