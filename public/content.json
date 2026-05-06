@@ -34,7 +34,7 @@
   },
   "hero": {
     "images": [
-      "/images/hero.webp",
+      "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778077957/tanavinto/WhatsApp_Image_2026-04-30_at_7.03.03_PM_6_bmafcw.jpg",
       "/images/udaipur.webp",
       "/images/goa.webp"
     ],
