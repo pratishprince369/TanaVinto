@@ -40,8 +40,8 @@ const Hero = ({ data }) => {
       </div>
       
       <div className="hero-content" style={{ position: 'relative', zIndex: 5, textAlign: 'center', color: 'white', paddingTop: '20vh' }}>
-        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '4rem', marginBottom: '1rem', fontWeight: 'bold' }}>{data.title}</h1>
-        <p style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto' }}>{data.subtitle}</p>
+        <h1 style={{ fontFamily: 'var(--font-heading)', fontSize: '4rem', marginBottom: '1rem', color: 'white' }}>{data.title}</h1>
+        <p style={{ fontSize: '1.2rem', maxWidth: '600px', margin: '0 auto', color: 'white' }}>{data.subtitle}</p>
       </div>
 
       <div className="hero-bottom-btn">
