@@ -423,28 +423,10 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
-
+    <!-- Removed Firebase SDKs -->
     <script>
-        // Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyBWTkTtLcpFBlWqwjP5zF1tRLTg02P6PQs",
-            authDomain: "tanavinto.firebaseapp.com",
-            projectId: "tanavinto",
-            storageBucket: "tanavinto.firebasestorage.app",
-            messagingSenderId: "605325022400",
-            appId: "1:605325022400:web:6c622947e1a883a55d0925"
-        };
-
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const storage = firebase.storage();
-
         let content = null;
+        const API_BASE = ''; // Use relative paths since served from same origin
 
         async function login() {
             const user = document.getElementById('username').value;
@@ -459,23 +441,14 @@
 
         async function loadContent() {
             try {
-                const docRef = db.collection('content').doc('website');
-                const docSnap = await docRef.get();
-                
-                if (docSnap.exists) {
-                    content = docSnap.data();
-                } else {
-                    // If no data in Firebase, load from the local content.json fallback
-                    const res = await fetch('/content.json');
-                    content = await res.json();
-                }
+                const res = await fetch(`${API_BASE}/api/content`);
+                content = await res.json();
                 populateForm();
             } catch (err) {
                 console.error('Error loading content:', err);
-                alert('Error loading content from Firebase. Please check your console/rules.');
+                alert('Error loading content. Make sure admin-server.js is running.');
             }
         }
-
 
         async function uploadImage(input, path) {
             const file = input.files[0];
@@ -487,47 +460,41 @@
             const statusText = document.getElementById('upload-status-text');
 
             overlay.style.display = 'flex';
-            progressFill.style.width = '0%';
-            percentageText.innerText = '0%';
-            statusText.innerText = file.type.startsWith('video/') ? 'Uploading Video...' : 'Uploading Image...';
+            progressFill.style.width = '20%'; // Fake progress for start
+            percentageText.innerText = '20%';
+            statusText.innerText = file.type.startsWith('video/') ? 'Uploading Video to Cloudinary...' : 'Uploading Image to Cloudinary...';
 
             try {
-                const fileName = Date.now() + '-' + file.name;
-                const folder = file.type.startsWith('video/') ? 'videos/' : 'images/';
-                const storageRef = storage.ref(folder + fileName);
+                const formData = new FormData();
+                formData.append('image', file);
                 
-                const uploadTask = storageRef.put(file);
-
-                return new Promise((resolve, reject) => {
-                    uploadTask.on('state_changed', 
-                        (snapshot) => {
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            progressFill.style.width = progress + '%';
-                            percentageText.innerText = Math.round(progress) + '%';
-                        }, 
-                        (error) => {
-                            overlay.style.display = 'none';
-                            console.error('Upload error:', error);
-                            alert('Upload failed: ' + error.message);
-                            reject(error);
-                        }, 
-                        async () => {
-                            const url = await uploadTask.snapshot.ref.getDownloadURL();
-                            
-                            // Update content object dynamically
-                            const keys = path.split('.');
-                            let obj = content;
-                            for (let i = 0; i < keys.length - 1; i++) {
-                                obj = obj[keys[i]];
-                            }
-                            obj[keys[keys.length - 1]] = url;
-                            
-                            overlay.style.display = 'none';
-                            populateForm();
-                            resolve(url);
-                        }
-                    );
+                const response = await fetch(`${API_BASE}/api/upload`, {
+                    method: 'POST',
+                    body: formData
                 });
+
+                if (!response.ok) throw new Error('Upload failed');
+                
+                const result = await response.json();
+                const url = result.url;
+                
+                progressFill.style.width = '100%';
+                percentageText.innerText = '100%';
+
+                // Update content object dynamically
+                const keys = path.split('.');
+                let obj = content;
+                for (let i = 0; i < keys.length - 1; i++) {
+                    obj = obj[keys[i]];
+                }
+                obj[keys[keys.length - 1]] = url;
+                
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    populateForm();
+                }, 500);
+                
+                return url;
             } catch (err) {
                 overlay.style.display = 'none';
                 console.error('Upload error:', err);
@@ -725,10 +692,16 @@
                 content.footer.description = document.getElementById('footer-desc').value;
                 content.wellness.title = document.getElementById('wellness-title').value;
 
-                await db.collection('content').doc('website').set(content);
-                
+                const response = await fetch(`${API_BASE}/api/content`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(content)
+                });
+
+                if (!response.ok) throw new Error('Save failed');
+
                 const notif = document.getElementById('notification');
-                notif.innerText = "Changes saved successfully to Firebase!";
+                notif.innerText = "Changes saved successfully to content.json!";
                 notif.classList.add('show');
                 setTimeout(() => notif.classList.remove('show'), 3000);
             } catch (err) {
@@ -743,7 +716,7 @@
                 title: 'New Item',
                 subtitle: 'Subtitle',
                 desc: 'Description...',
-                image: '/images/hero.webp'
+                image: 'https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg'
             });
             populateForm();
         }
@@ -773,7 +746,7 @@
         }
 
         function addHeroImage() {
-            content.hero.images.push('/images/hero.webp');
+            content.hero.images.push('https://res.cloudinary.com/demo/image/upload/v1312461204/sample.jpg');
             populateForm();
         }
 
@@ -798,8 +771,10 @@
         }
 
         function removeNavLink(i) {
-            content.navbar.links.splice(i, 1);
-            populateForm();
+            if (content.navbar.links.length > 1) {
+                content.navbar.links.splice(i, 1);
+                populateForm();
+            }
         }
     </script>
 </body>

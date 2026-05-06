@@ -8,40 +8,10 @@ import ExclusivelyForYou from './components/ExclusivelyForYou';
 import Footer from './components/Footer';
 import './index.css';
 
-import { db } from './firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
 import initialContent from './content.json';
 
 function App() {
   const [content, setContent] = useState(initialContent);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Safety Timeout: If Firebase doesn't respond in 5s, show local content
-    const timeout = setTimeout(() => {
-      setLoading(false);
-      console.log('Firebase timeout - using local fallback');
-    }, 5000);
-
-    const fetchContent = async () => {
-      try {
-        const docRef = doc(db, 'content', 'website');
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setContent(docSnap.data());
-        }
-      } catch (err) {
-        console.error('Error fetching from Firebase:', err);
-      } finally {
-        clearTimeout(timeout);
-        setLoading(false);
-      }
-    };
-    fetchContent();
-  }, []);
-
-  if (loading || !content) return <div className="loading">Loading...</div>;
 
   return (
     <div className="app">

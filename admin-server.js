@@ -4,6 +4,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
 import cors from 'cors';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,26 +15,19 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3001;
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Configure Multer for image and video uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    let dir = 'public/images';
-    if (req.body.folder === 'slider') {
-      dir = 'public/images/slider';
-    } else if (file.mimetype.startsWith('video/')) {
-      dir = 'public/videos';
-    }
-    cb(null, dir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+app.use(cors());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Configure Multer for temporary storage before Cloudinary upload
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // API to get content
@@ -53,18 +50,41 @@ app.post('/api/content', async (req, res) => {
   }
 });
 
-// API to upload image
-app.post('/api/upload', upload.single('image'), (req, res) => {
+// API to upload to Cloudinary
+app.post('/api/upload', upload.single('image'), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
-  const folder = req.body.folder === 'slider' ? '/images/slider/' : '/images/';
-  res.json({ url: folder + req.file.filename });
+
+  try {
+    // Determine resource type (image or video)
+    const resourceType = req.file.mimetype.startsWith('video/') ? 'video' : 'image';
+    
+    // Upload to Cloudinary using a stream
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder: 'tanavinto',
+        resource_type: resourceType,
+      },
+      (error, result) => {
+        if (error) {
+          console.error('Cloudinary upload error:', error);
+          return res.status(500).json({ error: 'Cloudinary upload failed' });
+        }
+        res.json({ url: result.secure_url });
+      }
+    );
+
+    uploadStream.end(req.file.buffer);
+  } catch (error) {
+    console.error('Upload process error:', error);
+    res.status(500).json({ error: 'Upload process failed' });
+  }
 });
 
 // Serve admin.html
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin.html'));
+  res.sendFile(path.join(__dirname, 'public/admin.html'));
 });
 
 app.listen(PORT, () => {
