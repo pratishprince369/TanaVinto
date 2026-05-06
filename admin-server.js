@@ -33,7 +33,7 @@ const upload = multer({ storage });
 // API to get content
 app.get('/api/content', async (req, res) => {
   try {
-    const data = await fs.readFile(path.join(__dirname, 'src/content.json'), 'utf8');
+    const data = await fs.readFile(path.join(__dirname, 'public/content.json'), 'utf8');
     res.json(JSON.parse(data));
   } catch (error) {
     res.status(500).json({ error: 'Failed to read content' });
@@ -43,7 +43,7 @@ app.get('/api/content', async (req, res) => {
 // API to update content
 app.post('/api/content', async (req, res) => {
   try {
-    await fs.writeFile(path.join(__dirname, 'src/content.json'), JSON.stringify(req.body, null, 2));
+    await fs.writeFile(path.join(__dirname, 'public/content.json'), JSON.stringify(req.body, null, 2));
     res.json({ message: 'Content updated successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Failed to update content' });

@@ -296,7 +296,8 @@
         <div class="nav-item" onclick="showSection('footer-sec')">Footer</div>
         
         <div style="margin-top: 2rem; padding-bottom: 2rem;">
-            <button class="btn" style="width: 100%; background: #444;" onclick="copyJSON()">COPY UPDATED JSON</button>
+            <button class="btn" id="save-btn" style="width: 100%; margin-bottom: 0.5rem;" onclick="saveContent()">SAVE CHANGES</button>
+            <button class="btn" style="width: 100%; background: #444; font-size: 0.8rem;" onclick="copyJSON()">COPY UPDATED JSON</button>
         </div>
     </div>
 
@@ -592,7 +593,34 @@
 
         function copyJSON() {
             navigator.clipboard.writeText(JSON.stringify(content, null, 2));
-            showNotification("JSON Copied! Paste it into public/content.json");
+            showNotification("JSON Copied! Paste it into public/content.json if saving fails.");
+        }
+
+        async function saveContent() {
+            const btn = document.getElementById('save-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "SAVING...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/api/content', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(content)
+                });
+
+                if (!response.ok) throw new Error('Save failed');
+                
+                showNotification("Changes saved successfully!");
+            } catch (err) {
+                console.error(err);
+                alert("Failed to save to server. This usually happens if you are running on Vercel without a backend. Use 'COPY UPDATED JSON' and manually update the file instead.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
 
         function addItem(key) {
