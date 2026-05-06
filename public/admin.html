@@ -31,29 +31,32 @@
             width: 260px;
             background: var(--secondary);
             border-right: 1px solid var(--border);
-            padding: 2rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
             position: fixed;
             height: 100vh;
+            overflow-y: auto;
         }
 
         .sidebar h1 {
             font-family: 'Cinzel', serif;
             color: var(--primary);
-            font-size: 1.5rem;
-            margin-bottom: 3rem;
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
             letter-spacing: 2px;
+            text-align: center;
         }
 
         .nav-item {
-            padding: 1rem;
+            padding: 0.8rem 1rem;
             color: var(--text-dim);
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
             transition: 0.3s;
             cursor: pointer;
+            font-size: 0.9rem;
         }
 
         .nav-item:hover, .nav-item.active {
@@ -87,10 +90,14 @@
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--border);
             padding-bottom: 1rem;
+            color: var(--primary);
         }
 
         .form-group {
             margin-bottom: 1.5rem;
+            background: #252525;
+            padding: 15px;
+            border-radius: 8px;
         }
 
         label {
@@ -98,12 +105,13 @@
             margin-bottom: 0.5rem;
             color: var(--text-dim);
             font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        input[type="text"], textarea {
+        input[type="text"], textarea, select {
             width: 100%;
             padding: 0.8rem;
-            background: #2a2a2a;
+            background: #1a1a1a;
             border: 1px solid var(--border);
             color: white;
             border-radius: 6px;
@@ -126,8 +134,8 @@
         }
 
         .image-preview {
-            width: 100px;
-            height: 100px;
+            width: 100%;
+            max-height: 150px;
             object-fit: cover;
             border-radius: 4px;
             margin-top: 1rem;
@@ -136,13 +144,14 @@
 
         .url-box {
             background: #000;
-            padding: 5px 10px;
+            padding: 8px 12px;
             border-radius: 4px;
             font-size: 0.75rem;
             color: var(--primary);
-            margin-top: 5px;
+            margin-top: 8px;
             word-break: break-all;
             border: 1px solid var(--border);
+            font-family: monospace;
         }
 
         /* Login Modal */
@@ -169,11 +178,6 @@
             border: 1px solid var(--primary);
         }
 
-        .login-box h2 {
-            border: none;
-            margin-bottom: 2rem;
-        }
-
         .notification {
             position: fixed;
             top: 20px;
@@ -191,7 +195,6 @@
             transform: translateY(0);
         }
 
-        /* Upload Progress Bar */
         .upload-overlay {
             position: fixed;
             top: 0;
@@ -231,7 +234,27 @@
             height: 100%;
             background: linear-gradient(90deg, var(--primary), #e6c288);
             transition: width 0.3s ease;
-            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .item-card {
+            background: #2a2a2a;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -239,12 +262,12 @@
 
     <div id="login-overlay">
         <div class="login-box">
-            <h2>ADMIN LOGIN</h2>
+            <h2 style="font-family: 'Cinzel', serif; color: var(--primary);">ADMIN LOGIN</h2>
             <div class="form-group">
                 <input type="text" id="username" placeholder="Username">
             </div>
             <div class="form-group">
-                <input type="password" id="password" placeholder="Password" style="width: 100%; padding: 0.8rem; background: #2a2a2a; border: 1px solid var(--border); color: white; border-radius: 6px;">
+                <input type="password" id="password" placeholder="Password">
             </div>
             <button class="btn" onclick="login()">LOGIN</button>
         </div>
@@ -257,12 +280,15 @@
         <div class="nav-item" onclick="showSection('hero-sec')">Hero Section</div>
         <div class="nav-item" onclick="showSection('pride-sec')">Pride Section</div>
         <div class="nav-item" onclick="showSection('dest-sec')">Destinations</div>
+        <div class="nav-item" onclick="showSection('explore-sec')">Explore More</div>
+        <div class="nav-item" onclick="showSection('exclusive-sec')">Exclusive Offers</div>
         <div class="nav-item" onclick="showSection('rest-sec')">Restaurants</div>
+        <div class="nav-item" onclick="showSection('event-sec')">Events & Conf.</div>
+        <div class="nav-item" onclick="showSection('wellness-sec')">Wellness Circle</div>
         <div class="nav-item" onclick="showSection('footer-sec')">Footer</div>
         
-        <div style="margin-top: auto; padding-top: 2rem;">
+        <div style="margin-top: 2rem; padding-bottom: 2rem;">
             <button class="btn" style="width: 100%; background: #444;" onclick="copyJSON()">COPY UPDATED JSON</button>
-            <p style="font-size: 0.65rem; color: var(--text-dim); margin-top: 5px; text-align: center;">Paste this in public/content.json</p>
         </div>
     </div>
 
@@ -270,37 +296,34 @@
         
         <div id="config-sec" class="section-card active">
             <h2>Tool Settings</h2>
-            <div class="form-group" style="background: #2a2a2a; padding: 15px; border-radius: 8px; border: 1px solid var(--primary);">
+            <div class="form-group" style="border: 1px solid var(--primary);">
                 <label>Cloudinary Cloud Name</label>
                 <input type="text" id="cloud-name" value="drbeq3h8m">
-                <label style="margin-top: 15px;">Unsigned Upload Preset (Crucial for Vercel)</label>
+                <label style="margin-top: 15px;">Unsigned Upload Preset</label>
                 <input type="text" id="upload-preset" value="ml_default">
-                <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 10px;">
-                    Tip: Create an "Unsigned" preset in Cloudinary Settings -> Upload tab.
-                </p>
             </div>
         </div>
 
         <div id="navbar-sec" class="section-card">
-            <h2>Header & Navigation</h2>
+            <h2>Header & Logo</h2>
             <div class="form-group">
                 <label>Logo Image</label>
                 <input type="file" onchange="uploadImage(this, 'navbar.logo')">
-                <img id="logo-preview" class="image-preview">
-                <div id="navbar.logo-url" class="url-box">URL will appear here...</div>
+                <img id="logo-preview" class="image-preview" style="max-height: 80px; object-fit: contain;">
+                <div id="navbar.logo-url" class="url-box"></div>
             </div>
         </div>
 
         <div id="hero-sec" class="section-card">
             <h2>Hero Section</h2>
             <div id="hero-images-container"></div>
-            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addHeroImage()">+ Add Image</button>
+            <button class="btn" onclick="addHeroImage()">+ Add Hero Image</button>
             <div class="form-group" style="margin-top: 2rem;">
-                <label>Headline</label>
+                <label>Hero Title</label>
                 <input type="text" id="hero-title" onchange="content.hero.title = this.value">
             </div>
             <div class="form-group">
-                <label>Subtitle</label>
+                <label>Hero Subtitle</label>
                 <textarea id="hero-subtitle" onchange="content.hero.subtitle = this.value"></textarea>
             </div>
         </div>
@@ -308,10 +331,10 @@
         <div id="pride-sec" class="section-card">
             <h2>Pride Section</h2>
             <div class="form-group">
-                <label>Media</label>
+                <label>Image/Thumbnail</label>
                 <input type="file" onchange="uploadImage(this, 'prideSection.image')">
-                <img id="pride-preview" class="image-preview" style="width: 100%; height: 200px;">
-                <div id="prideSection.image-url" class="url-box">URL will appear here...</div>
+                <img id="pride-preview" class="image-preview">
+                <div id="prideSection.image-url" class="url-box"></div>
             </div>
             <div class="form-group">
                 <label>Title</label>
@@ -326,19 +349,51 @@
         <div id="dest-sec" class="section-card">
             <h2>Destinations</h2>
             <div id="destinations-container"></div>
-            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('destinations')">+ Add Destination</button>
+            <button class="btn" onclick="addItem('destinations')">+ Add Destination</button>
+        </div>
+
+        <div id="explore-sec" class="section-card">
+            <h2>Explore More</h2>
+            <div id="explore-container"></div>
+            <button class="btn" onclick="addItem('explore')">+ Add Explore Item</button>
+        </div>
+
+        <div id="exclusive-sec" class="section-card">
+            <h2>Exclusive Offers</h2>
+            <div id="exclusive-container"></div>
+            <button class="btn" onclick="addItem('exclusive')">+ Add Offer</button>
         </div>
 
         <div id="rest-sec" class="section-card">
             <h2>Restaurants</h2>
             <div id="restaurants-container"></div>
-            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.8rem; margin-top: 1rem;" onclick="addItem('restaurants')">+ Add Restaurant</button>
+            <button class="btn" onclick="addItem('restaurants')">+ Add Restaurant</button>
+        </div>
+
+        <div id="event-sec" class="section-card">
+            <h2>Events & Conferences</h2>
+            <div id="events-container"></div>
+            <button class="btn" onclick="addItem('events')">+ Add Event</button>
+        </div>
+
+        <div id="wellness-sec" class="section-card">
+            <h2>Wellness Circle</h2>
+            <div class="form-group">
+                <label>Wellness Image</label>
+                <input type="file" onchange="uploadImage(this, 'wellness.image')">
+                <img id="wellness-preview" class="image-preview">
+                <div id="wellness.image-url" class="url-box"></div>
+            </div>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="wellness-title" onchange="content.wellness.title = this.value">
+            </div>
         </div>
 
         <div id="footer-sec" class="section-card">
             <h2>Footer</h2>
             <div class="form-group">
-                <label>Logo Text</label>
+                <label>Footer Logo/Title</label>
                 <input type="text" id="footer-logo" onchange="content.footer.logo = this.value">
             </div>
             <div class="form-group">
@@ -352,7 +407,7 @@
 
     <div id="upload-overlay" class="upload-overlay">
         <div class="progress-box">
-            <h3 id="upload-status-text">Uploading to Cloudinary...</h3>
+            <h3 id="upload-status-text" style="color: var(--primary); font-family: 'Cinzel', serif;">Uploading...</h3>
             <div class="progress-bar-container">
                 <div id="upload-progress-fill" class="progress-bar-fill"></div>
             </div>
@@ -377,12 +432,11 @@
         async function loadContent() {
             try {
                 const res = await fetch('/content.json');
-                if (!res.ok) throw new Error("Failed to load content.json");
+                if (!res.ok) throw new Error("Failed to load");
                 content = await res.json();
                 populateForm();
             } catch (err) {
-                console.error('Error loading content:', err);
-                alert('Could not load existing content. Make sure content.json is in the public folder.');
+                alert("Error loading content.json. Please make sure it's in the public folder.");
             }
         }
 
@@ -392,10 +446,7 @@
 
             const cloudName = document.getElementById('cloud-name').value;
             const preset = document.getElementById('upload-preset').value;
-
             const overlay = document.getElementById('upload-overlay');
-            const progressFill = document.getElementById('upload-progress-fill');
-            const percentageText = document.getElementById('upload-percentage');
             overlay.style.display = 'flex';
 
             try {
@@ -409,11 +460,7 @@
                     body: formData
                 });
 
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.error.message || 'Upload failed');
-                }
-                
+                if (!response.ok) throw new Error('Upload failed');
                 const result = await response.json();
                 const url = result.secure_url;
                 
@@ -425,28 +472,21 @@
                 }
                 obj[keys[keys.length - 1]] = url;
                 
-                progressFill.style.width = '100%';
-                percentageText.innerText = '100%';
-
-                // Show URL
-                const urlBox = document.getElementById(path + "-url");
-                if (urlBox) urlBox.innerText = url;
-
                 setTimeout(() => {
                     overlay.style.display = 'none';
                     populateForm();
-                    showNotification("Uploaded! Copy URL or Export JSON.");
+                    showNotification("Uploaded successfully!");
                 }, 500);
             } catch (err) {
                 overlay.style.display = 'none';
-                alert('Upload failed: ' + err.message + "\n\nTip: Make sure your preset is 'Unsigned' in Cloudinary Settings.");
+                alert('Upload failed: ' + err.message);
             }
         }
 
         function populateForm() {
             if (!content) return;
 
-            // Navbar
+            // Logo
             document.getElementById('logo-preview').src = content.navbar.logo;
             document.getElementById('navbar.logo-url').innerText = content.navbar.logo;
 
@@ -455,10 +495,11 @@
             heroImgContainer.innerHTML = '<h3>Hero Images</h3>';
             content.hero.images.forEach((img, i) => {
                 heroImgContainer.innerHTML += `
-                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px; background: #2a2a2a; padding: 10px; border-radius: 8px;">
-                        <img src="${img}" style="width: 50px; height: 50px; object-fit: cover;">
-                        <input type="file" onchange="uploadImage(this, 'hero.images.${i}')" style="flex: 1;">
-                        <button class="btn" style="padding: 0.5rem; background: #ff4444;" onclick="removeHeroImage(${i})">X</button>
+                    <div class="item-card">
+                        <button class="delete-btn" onclick="removeHeroImage(${i})">Delete</button>
+                        <img src="${img}" class="image-preview" style="height: 100px;">
+                        <input type="file" onchange="uploadImage(this, 'hero.images.${i}')" style="margin-top: 10px;">
+                        <div class="url-box">${img}</div>
                     </div>
                 `;
             });
@@ -471,22 +512,47 @@
             document.getElementById('pride-title').value = content.prideSection.title;
             document.getElementById('pride-subtitle').value = content.prideSection.subtitle;
 
-            // Destinations
-            const destContainer = document.getElementById('destinations-container');
-            destContainer.innerHTML = '<h3>Destinations</h3>';
-            content.destinations.items.forEach((dest, i) => {
-                destContainer.innerHTML += `
-                    <div style="background: #2a2a2a; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;">
-                        <input type="text" value="${dest.title}" onchange="content.destinations.items[${i}].title = this.value" placeholder="Title">
-                        <input type="file" onchange="uploadImage(this, 'destinations.items.${i}.image')" style="margin-top: 10px;">
-                        <div class="url-box">${dest.image}</div>
-                    </div>
-                `;
-            });
+            // Collections Sections
+            renderList('destinations', 'destinations-container');
+            renderList('explore', 'explore-container');
+            renderList('exclusive', 'exclusive-container');
+            renderList('restaurants', 'restaurants-container');
+            renderList('events', 'events-container');
+
+            // Wellness
+            document.getElementById('wellness-preview').src = content.wellness.image;
+            document.getElementById('wellness.image-url').innerText = content.wellness.image;
+            document.getElementById('wellness-title').value = content.wellness.title;
 
             // Footer
             document.getElementById('footer-logo').value = content.footer.logo;
             document.getElementById('footer-desc').value = content.footer.description;
+        }
+
+        function renderList(key, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<h3>${key.toUpperCase()}</h3>`;
+            content[key].items.forEach((item, i) => {
+                container.innerHTML += `
+                    <div class="item-card">
+                        <button class="delete-btn" onclick="removeItem('${key}', ${i})">Delete</button>
+                        <label>Title</label>
+                        <input type="text" value="${item.title}" onchange="content.${key}.items[${i}].title = this.value">
+                        ${item.subtitle !== undefined ? `
+                            <label style="margin-top:10px;">Subtitle</label>
+                            <input type="text" value="${item.subtitle}" onchange="content.${key}.items[${i}].subtitle = this.value">
+                        ` : ''}
+                        ${item.desc !== undefined ? `
+                            <label style="margin-top:10px;">Description</label>
+                            <textarea onchange="content.${key}.items[${i}].desc = this.value">${item.desc}</textarea>
+                        ` : ''}
+                        <label style="margin-top:10px;">Image</label>
+                        <input type="file" onchange="uploadImage(this, '${key}.items.${i}.image')">
+                        <img src="${item.image}" class="image-preview">
+                        <div class="url-box">${item.image}</div>
+                    </div>
+                `;
+            });
         }
 
         function copyJSON() {
@@ -495,8 +561,18 @@
         }
 
         function addItem(key) {
-            content[key].items.push({ title: 'New Item', image: '' });
+            const newItem = { title: 'New Item', image: '' };
+            if (key === 'destinations' || key === 'explore' || key === 'events') newItem.subtitle = 'Subtitle';
+            if (key === 'exclusive' || key === 'restaurants') newItem.desc = 'Description...';
+            content[key].items.push(newItem);
             populateForm();
+        }
+
+        function removeItem(key, i) {
+            if (confirm("Delete this item?")) {
+                content[key].items.splice(i, 1);
+                populateForm();
+            }
         }
 
         function addHeroImage() {
@@ -505,8 +581,10 @@
         }
 
         function removeHeroImage(i) {
-            content.hero.images.splice(i, 1);
-            populateForm();
+            if (confirm("Delete this hero image?")) {
+                content.hero.images.splice(i, 1);
+                populateForm();
+            }
         }
 
         function showSection(id) {
