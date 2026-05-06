@@ -34,9 +34,9 @@
   },
   "hero": {
     "images": [
-      "/images/hero.webp",
-      "/images/udaipur.webp",
-      "/images/goa.webp"
+      "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778077957/tanavinto/WhatsApp_Image_2026-04-30_at_7.03.03_PM_6_bmafcw.jpg",
+      "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778080281/tanavinto/WhatsApp_Image_2026-04-30_at_7.03.04_PM_4_flsuer.jpg",
+      "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778080290/tanavinto/WhatsApp_Image_2026-04-30_at_7.03.03_PM_5_sfbhly.jpg"
     ],
     "title": "TanaVinto Luxury Villas",
     "subtitle": "Discover the finest hotels and resorts"
