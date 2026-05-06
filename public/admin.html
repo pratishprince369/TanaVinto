@@ -285,6 +285,7 @@
         <h1>TANAVINTO</h1>
         <div class="nav-item active" onclick="showSection('config-sec')">Tool Settings</div>
         <div class="nav-item" onclick="showSection('navbar-sec')">Header & Logo</div>
+        <div class="nav-item" onclick="showSection('nav-menu-sec')">Navigation Menu</div>
         <div class="nav-item" onclick="showSection('hero-sec')">Hero Section</div>
         <div class="nav-item" onclick="showSection('pride-sec')">Pride Section</div>
         <div class="nav-item" onclick="showSection('dest-sec')">Destinations</div>
@@ -321,6 +322,16 @@
                 <img id="logo-preview" class="image-preview" style="max-height: 80px; object-fit: contain;">
                 <div id="navbar.logo-url" class="url-box"></div>
             </div>
+            <div class="form-group">
+                <label>Book Button Text</label>
+                <input type="text" id="navbar-btn-text" onchange="content.navbar.button.label = this.value">
+            </div>
+        </div>
+
+        <div id="nav-menu-sec" class="section-card">
+            <h2>Navigation Menu</h2>
+            <div id="nav-links-container"></div>
+            <button class="btn" onclick="addNavLink()">+ Add Link</button>
         </div>
 
         <div id="hero-sec" class="section-card">
@@ -518,6 +529,22 @@
             // Logo
             document.getElementById('logo-preview').src = content.navbar.logo;
             document.getElementById('navbar.logo-url').innerText = content.navbar.logo;
+            document.getElementById('navbar-btn-text').value = content.navbar.button.label;
+
+            // Navigation Links
+            const navContainer = document.getElementById('nav-links-container');
+            navContainer.innerHTML = '';
+            content.navbar.links.forEach((link, i) => {
+                navContainer.innerHTML += `
+                    <div class="item-card">
+                        <button class="delete-btn" onclick="removeNavLink(${i})">Delete</button>
+                        <label>Link Label</label>
+                        <input type="text" value="${link.label}" onchange="content.navbar.links[${i}].label = this.value">
+                        <label style="margin-top:10px;">Link URL (Href)</label>
+                        <input type="text" value="${link.href}" onchange="content.navbar.links[${i}].href = this.value">
+                    </div>
+                `;
+            });
 
             // Hero
             const heroImgContainer = document.getElementById('hero-images-container');
@@ -654,6 +681,18 @@
         function removeHeroImage(i) {
             if (confirm("Delete this hero image?")) {
                 content.hero.images.splice(i, 1);
+                populateForm();
+            }
+        }
+
+        function addNavLink() {
+            content.navbar.links.push({ label: 'NEW LINK', href: '#' });
+            populateForm();
+        }
+
+        function removeNavLink(i) {
+            if (confirm("Delete this link?")) {
+                content.navbar.links.splice(i, 1);
                 populateForm();
             }
         }
