@@ -616,7 +616,11 @@
                 showNotification("Changes saved successfully!");
             } catch (err) {
                 console.error(err);
-                alert("Failed to save to server. This usually happens if you are running on Vercel without a backend. Use 'COPY UPDATED JSON' and manually update the file instead.");
+                if (window.location.hostname.includes('vercel.app')) {
+                    alert("Failed to save to Vercel. Please ensure you have added GITHUB_TOKEN to your Vercel Environment Variables. Check the console for details.");
+                } else {
+                    alert("Failed to save to server. This usually happens if the local admin server is not running. Run 'node admin-server.js' to enable saving.");
+                }
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
