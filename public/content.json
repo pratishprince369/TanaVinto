@@ -53,9 +53,9 @@
     "items": [
       {
         "id": 1,
-        "title": "Taj Exotica Resort & Spa",
-        "subtitle": "Goa",
-        "image": "/images/goa.webp"
+        "title": "Private Pool Villa",
+        "subtitle": "Relax in your own private luxury space with scenic surroundings and peaceful vibes.",
+        "image": "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778086964/tanavinto/swimming-pool_mzk4yj.jpg"
       },
       {
         "id": 2,
