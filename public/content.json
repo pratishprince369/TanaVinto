@@ -82,15 +82,15 @@
       },
       {
         "id": 2,
-        "title": "Rambagh Palace",
-        "subtitle": "Jaipur",
-        "image": "/images/udaipur.webp"
+        "title": "Spacious Living Area",
+        "subtitle": "Relax, vibe, and celebrate together.",
+        "image": "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778786224/tanavinto/Celebrations_Parties_z1uhqh.jpg"
       },
       {
         "id": 3,
-        "title": "Taj Mahal Tower",
-        "subtitle": "Mumbai",
-        "image": "/images/london.webp"
+        "title": "Cozy Bedrooms",
+        "subtitle": "Comfortable luxury stays for every guest.",
+        "image": "https://res.cloudinary.com/drbeq3h8m/image/upload/v1778786263/tanavinto/20260331_144413_cxjh80.jpg"
       }
     ]
   },
